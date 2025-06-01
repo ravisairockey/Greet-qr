@@ -37,7 +37,6 @@
             src: url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap');
         }
 
-        /* Custom Cursor */
         .custom-cursor {
             position: fixed;
             width: 16px;
@@ -94,14 +93,12 @@
             animation: burst-fade 0.5s ease-out forwards;
         }
 
-        /* Hide default cursor on desktop */
         @media (hover: hover) {
             * {
                 cursor: none;
             }
         }
 
-        /* Show default cursor on touch devices */
         @media (hover: none) {
             .custom-cursor, .cursor-trail, .cursor-burst {
                 display: none;
@@ -111,7 +108,6 @@
             }
         }
 
-        /* Animated Hexagonal Grid Background */
         .hex-grid {
             position: fixed;
             top: 0;
@@ -138,7 +134,6 @@
             animation: hex-flicker 3s ease-in-out infinite;
         }
 
-        /* Circuit Traces */
         .circuit-traces {
             position: fixed;
             top: 0;
@@ -157,7 +152,6 @@
             animation: circuit-flow 8s linear infinite;
         }
 
-        /* Data Nodes */
         .data-nodes {
             position: fixed;
             top: 0;
@@ -177,7 +171,6 @@
             animation: node-drift 18s ease-in-out infinite;
         }
 
-        /* Glow Effects with RGB Cycling */
         .glow-effect {
             position: fixed;
             border-radius: 50%;
@@ -203,7 +196,6 @@
             animation: float-2 14s ease infinite alternate, rgb-cycle 7s ease-in-out infinite 2s;
         }
 
-        /* Container */
         .container {
             width: 100%;
             min-height: 100vh;
@@ -215,7 +207,6 @@
             position: relative;
         }
 
-        /* Content */
         .content {
             width: 100%;
             max-width: 1280px;
@@ -224,7 +215,7 @@
             align-items: center;
             gap: 2rem;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
         .header {
@@ -258,7 +249,6 @@
             color: rgba(255, 255, 255, 0.9);
         }
 
-        /* Cyberpunk QR Card */
         .cyber-card {
             background: rgba(10, 15, 45, 0.8);
             backdrop-filter: blur(10px);
@@ -338,7 +328,6 @@
             font-weight: 400;
         }
 
-        /* Cyberpunk Button */
         .cyber-button {
             display: inline-flex;
             align-items: center;
@@ -393,7 +382,6 @@
             animation: pulse 1.5s ease;
         }
 
-        /* Success Overlay */
         .success-overlay {
             position: fixed;
             top: 0;
@@ -439,7 +427,6 @@
             transform: translate(-50%, -70%);
         }
 
-        /* Social Links */
         .cyber-social {
             display: flex;
             gap: 1.5rem;
@@ -488,7 +475,6 @@
         .cyber-social a:nth-child(2):hover { color: #0A66C2; }
         .cyber-social a:nth-child(3):hover { color: #E1306C; }
 
-        /* Animations */
         @keyframes cursor-pulse {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
             50% { transform: translate(-50%, -50%) scale(1.15); }
@@ -573,28 +559,15 @@
         }
 
         @keyframes particle-move {
-            0% {
-                transform: translate(0, 0);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translate(var(--x), var(--y));
-                opacity: 0;
-            }
+            0% { transform: translate(0, 0); opacity: 0.7; }
+            100% { transform: translate(var(--x), var(--y)); opacity: 0; }
         }
 
         @keyframes confetti {
-            0% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.5);
-            }
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.5); }
         }
 
-        /* Cyberpunk Particles */
         .cyber-particles {
             position: fixed;
             top: 0;
@@ -613,7 +586,6 @@
             filter: blur(2px);
         }
 
-        /* Confetti Particles */
         .confetti-particle {
             position: absolute;
             border-radius: 4px;
@@ -622,54 +594,20 @@
             height: 10px;
         }
 
-        /* Mobile Optimizations */
         @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .cyber-card {
-                max-width: 300px;
-                padding: 1.5rem;
-            }
-
-            .cyber-button {
-                padding: 0.8rem 1.5rem;
-                font-size: 1rem;
-            }
-
-            .cyber-social a {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
-
-            .glow-1, .glow-2 {
-                filter: blur(50px);
-            }
-
-            .success-message {
-                font-size: 1.4rem;
-                padding: 1.5rem;
-            }
-
-            .header h1 {
-                font-size: clamp(2rem, 5vw, 3.5rem);
-            }
-
-            .header p {
-                font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-            }
-
-            .data-node {
-                width: 6px;
-                height: 6px;
-            }
+            .container { padding: 1rem; }
+            .cyber-card { max-width: 300px; padding: 1.5rem; }
+            .cyber-button { padding: 0.8rem 1.5rem; font-size: 1rem; }
+            .cyber-social a { width: 40px; height: 40px; font-size: 1.2rem; }
+            .glow-1, .glow-2 { filter: blur(50px); }
+            .success-message { font-size: 1.4rem; padding: 1.5rem; }
+            .header h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+            .header p { font-size: clamp(0.9rem, 2.5vw, 1.1rem); }
+            .data-node { width: 6px; height: 6px; }
         }
     </style>
 </head>
 <body>
-    <!-- Custom Cursor and Particles -->
     <div class="custom-cursor" id="customCursor"></div>
     <div class="cursor-trail" id="trail0"></div>
     <div class="cursor-trail" id="trail1"></div>
@@ -681,7 +619,6 @@
     <div class="cursor-trail" id="trail7"></div>
     <div class="cyber-particles" id="cursorBursts"></div>
 
-    <!-- Cyberpunk Background Elements -->
     <div class="hex-grid"></div>
     <div class="circuit-traces"></div>
     <div class="data-nodes" id="dataNodes"></div>
@@ -712,14 +649,13 @@
 
             <div class="cyber-social">
                 <a href="https://github.com/ravisairockey" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                <a href="https://in.linkedin.com/in/ravisai-vigneswara-113894191/ms?trk=people-guest_people_search-card" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://in.linkedin.com/in/ravisai-vigneswara-113894191" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 <a href="https://www.instagram.com/rsv_amil/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
     </div>
 
     <script>
-        // Custom Cursor and Particle System
         const cursor = document.getElementById('customCursor');
         const trails = Array.from({ length: 8 }, (_, i) => document.getElementById(`trail${i}`));
         const burstContainer = document.getElementById('cursorBursts');
@@ -735,7 +671,6 @@
             cursor.style.left = `${cursorX}px`;
             cursor.style.top = `${cursorY}px`;
 
-            // Update orbiting trails
             trails.forEach((trail, index) => {
                 const angle = (Date.now() / (isHovered ? 400 : 600) + index * (Math.PI * 2 / trails.length)) % (Math.PI * 2);
                 const radius = 15;
@@ -758,7 +693,6 @@
             mouseY = e.clientY;
         });
 
-        // Click burst effect
         document.addEventListener('click', (e) => {
             for (let i = 0; i < 4; i++) {
                 const burst = document.createElement('div');
@@ -777,7 +711,6 @@
             }
         });
 
-        // Hover interactions
         const interactiveElements = document.querySelectorAll('.cyber-button, .cyber-card, .cyber-social a');
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
@@ -790,10 +723,9 @@
             });
         });
 
-        // Background Particle System
         function createParticles() {
             const container = document.getElementById('particles');
-            const particleCount = window.innerWidth < 600 ? 40 : 80;
+            const particleCount = window.innerWidth < 768 ? 40 : 80;
 
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
@@ -803,7 +735,7 @@
                 const posY = Math.random() * 100;
                 const opacity = Math.random() * 0.5 + 0.3;
                 const duration = Math.random() * 10 + 6;
-                const delay = Math.random() * 10;
+                const delay = Math.random() * 3;
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 const xMove = (Math.random() - 0.5) * 200;
                 const yMove = (Math.random() - 0.5) * 200;
@@ -821,10 +753,9 @@
             }
         }
 
-        // Data Nodes System
         function createDataNodes() {
             const container = document.getElementById('dataNodes');
-            const nodeCount = window.innerWidth < 600 ? 8 : 16;
+            const nodeCount = window.innerWidth < 768 ? 8 : 16;
 
             for (let i = 0; i < nodeCount; i++) {
                 const node = document.createElement('div');
@@ -839,28 +770,26 @@
             }
         }
 
-        // Glitch Effect on QR Card
         const qrCard = document.getElementById('qrCard');
         function triggerGlitch() {
             qrCard.classList.add('glitch');
-            setTimeout(() => qrCard.classList.remove('glitch'), 200);
+            setTimeout(() => qrCard.classList.remove('glitch'), 270);
         }
         setInterval(() => {
             if (Math.random() > 0.8) triggerGlitch();
-        }, 3000);
+        }, 2500);
 
-        // QR Card Interaction
         qrCard.addEventListener('mousemove', (e) => {
             const rect = qrCard.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
-            const rotateX = y / rect.height * 20;
-            const rotateY = x / rect.width * 20;
-            qrCard.style.transform = `translateY(-12px) scale(1.03) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            const rotateX = y / rect.height * -8;
+            const rotateY = x / rect.width * 8;
+            qrCard.style.transform = `translateY(-8px) rotate3d(${rotateX}, ${rotateY}, 0, 4deg)`;
         });
 
         qrCard.addEventListener('mouseleave', () => {
-            qrCard.style.transform = 'translateY(0) scale(1)';
+            qrCard.style.transform = '';
         });
 
         qrCard.addEventListener('touchstart', () => {
@@ -869,66 +798,60 @@
 
         qrCard.addEventListener('touchend', () => {
             qrCard.style.transform = '';
-        }, {});
+        }, { passive: true });
 
-        // Download Wallpaper
-        document.getElementById('downloadBtn').addEventListener('click', async () => {
+        document.getElementById('downloadBtn').addEventListener('click', async (e) => {
+            const btn = document.getElementById('downloadBtn');
+            const successOverlay = document.getElementById('successOverlay');
+            const successMessage = document.getElementById('successMessage');
+
             try {
-                const btn = document.getElementById('downloadBtn');
-                const successOverlay = document.getElementById('successOverlay');
-                const successMessage = document.getElementById('successMessage');
-
                 btn.classList.add('click', 'pulse');
-                btn.innerHTML = '<i class="fas fa-cog fa-spin"></i> PREPARING...';
+                setTimeout(() => btn.classList.remove('click'), 500);
+                btn.innerHTML = '<i class="fas fa-cog fa-spin"></i> PREPARING RESCUE...';
                 btn.disabled = true;
 
-                // Create canvas
                 const canvas = document.createElement('canvas');
                 canvas.width = 1920;
-                canvas.height = 360;
+                canvas.height = 1080;
                 const ctx = canvas.getContext('2d');
 
-                // Background
-                ctx.fillStyle = '#0F1426';
-                ctx.fillRect(0, 0, 1920, 360);
+                ctx.fillStyle = '#0A0F2D';
+                ctx.fillRect(0, 0, 1920, 1080);
 
-                // Hex grid
                 const hexPattern = new Image();
-                hexPattern.src = '//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://ravisairockey.github.io/';
-                await new Promise(resolve => { hexPattern.onload = resolve; });
+                hexPattern.src = "data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L59.5 15v26L30 51 0.5 36V10L30 0z' fill='none' stroke='%2300D4FF' stroke-opacity='0.15' stroke-width='1.5'/%3E%3C/svg%3E";
+                await new Promise((resolve) => hexPattern.onload = resolve);
                 const pattern = ctx.createPattern(hexPattern, 'repeat');
                 ctx.fillStyle = pattern;
-                ctx.fillRect(0, 0, 360, 360);
+                ctx.fillRect(0, 0, 1920, 1080);
 
-                // Circuit traces
                 ctx.strokeStyle = 'rgba(0, 212, 255, 0.15)';
                 ctx.lineWidth = 2;
                 for (let x = -20; x < 1920; x += 30) {
                     ctx.beginPath();
                     ctx.moveTo(x, 0);
-                    ctx.lineTo(x + 15, 360);
+                    ctx.lineTo(x + 15, 1080);
                     ctx.stroke();
                 }
 
-                // Glow effects
                 const glow1 = ctx.createRadialGradient(200, 200, 0, 200, 200, 300);
                 glow1.addColorStop(0, 'rgba(0, 212, 255, 0.2)');
                 glow1.addColorStop(1, 'transparent');
                 ctx.fillStyle = glow1;
-                ctx.fillRect(0, 0, 1920, 360);
+                ctx.fillRect(0, 0, 1920, 1080);
 
-                const glow2 = ctx.createRadialGradient(1720, 200, 0, 1720, 200, 300);
+                const glow2 = ctx.createRadialGradient(1720, 880, 0, 1720, 880, 300);
                 glow2.addColorStop(0, 'rgba(177, 0, 255, 0.2)');
                 glow2.addColorStop(1, 'transparent');
                 ctx.fillStyle = glow2;
-                ctx.fillRect(0, 0, 1920, 360);
+                ctx.fillRect(0, 0, 1920, 1080);
 
-                // Data nodes
                 for (let i = 0; i < 10; i++) {
                     ctx.beginPath();
                     ctx.arc(
                         Math.random() * 1920,
-                        Math.random() * 360,
+                        Math.random() * 1080,
                         4,
                         0,
                         Math.PI * 2
@@ -940,48 +863,43 @@
                     ctx.shadowColor = 'transparent';
                 }
 
-                // QR card
                 ctx.save();
-                ctx.translate(960, 2); // Center at (960, 540)
+                ctx.translate(960, 480);
                 ctx.shadowColor = 'rgba(0, 212, 255, 0.6)';
                 ctx.shadowBlur = 30;
                 ctx.fillStyle = 'rgba(20, 25, 50, 0.8)';
                 ctx.beginPath();
                 ctx.moveTo(-170, -170);
                 ctx.lineTo(170, -170);
-                ctx.lineTo(190, -50);
-                ctx.lineTo(190, 50);
+                ctx.lineTo(190, -130);
+                ctx.lineTo(190, 130);
                 ctx.lineTo(170, 170);
                 ctx.lineTo(-170, 170);
-                ctx.lineTo(-190, 50);
-                ctx.lineTo(-190, -50);
+                ctx.lineTo(-190, 130);
+                ctx.lineTo(-190, -130);
                 ctx.closePath();
                 ctx.fill();
 
-                ctx.strokeStyle = '#FF4040';
-                ctx.lineWidth = 6;
+                ctx.strokeStyle = '#FF2D55';
+                ctx.lineWidth = 4;
                 ctx.stroke();
 
-                // QR code
                 const qrImg = new Image();
-                qrImg.crossOrigin = 'anonymous';
-                qrImg.src = '//api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://ravisairockey.github.io/Game-Proto/';
-                await new Promise(resolve => qrImg.onload = resolve);
-                ctx.drawImage(qrImg, -140, -20, 280, 280);
-
+                qrImg.crossOrigin = 'Anonymous';
+                qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://ravisairockey.github.io/Game-Proto/';
+                await new Promise((resolve) => qrImg.onload = resolve);
+                ctx.drawImage(qrImg, -140, -140, 280, 280);
                 ctx.restore();
 
-                // Text
-                ctx.fillStyle = '#ffffff';
+                ctx.fillStyle = 'white';
                 ctx.font = 'bold 48px "Orbitron", sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('RAVI SAI VIGNESWARA', 960, 460);
-                ctx.font = '30px "Orbitron", sans-serif';
+                ctx.fillText('RAVI SAI VIGNESWARA', 960, 700);
+                ctx.font = '34px "Orbitron", sans-serif';
                 ctx.fillStyle = '#00D4FF';
-                ctx.textShadow = '0 0 15px rgba(0, 212, 255, 0.7)';
-                ctx.fillText('UNLOCK MY GRID!', 960, 500);
+                ctx.textShadow = '0 0 10px rgba(0, 212, 255, 0.7)';
+                ctx.fillText('UNLOCK MY GRID!', 960, 750);
 
-                // Download
                 canvas.toBlob((blob) => {
                     const link = document.createElement('a');
                     link.href = URL.createObjectURL(blob);
@@ -990,12 +908,11 @@
 
                     btn.classList.remove('pulse');
                     btn.classList.add('success');
-                    btn.innerHTML = '<i class="fas fa-check-circle"></i> MISION COMPLETE!';
+                    btn.innerHTML = '<i class="fas fa-check-circle"></i> MISSION COMPLETE!';
                     successOverlay.classList.add('active');
                     successMessage.classList.add('active');
 
-                    // Confetti
-                    const container = document.createElement('confettiContainer');
+                    const confettiContainer = document.createElement('div');
                     confettiContainer.classList.add('cyber-particles');
                     document.body.appendChild(confettiContainer);
 
@@ -1010,9 +927,9 @@
                         particle.style.width = `${size}px`;
                         particle.style.height = `${size}px`;
                         particle.style.background = color;
-                        particle.style.left = '50%';
-                        particle.style.top = '50%';
-                        particle.style.transform = 'translate(-50%, -50%)';
+                        particle.style.left = `50%`;
+                        particle.style.top = `50%`;
+                        particle.style.transform = `translate(-50%, -50%)`;
                         particle.style.animation = `confetti ${duration}s ease-out`;
                         particle.style.setProperty('--x', `${Math.cos(angle) * speed}px`);
                         particle.style.setProperty('--y', `${Math.sin(angle) * speed}px`);
@@ -1021,7 +938,7 @@
 
                     setTimeout(() => {
                         btn.classList.remove('success');
-                        btn.innerHTML = '<i class="fas fa-download"></i> TRY AGAIN';
+                        btn.innerHTML = '<i class="fas fa-download"></i> TRY AGAIN!';
                         btn.disabled = false;
                         successOverlay.classList.remove('active');
                         successMessage.classList.remove('active');
@@ -1030,38 +947,34 @@
                 }, 'image/png');
 
             } catch (error) {
-                console.error('Error generating screenshot:', error);
+                console.error('Error generating wallpaper:', error);
                 btn.classList.remove('pulse');
-                btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> FAILED!';
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> RESCUE FAILED!';
                 setTimeout(() => {
-                    btn.innerHTML = '<i class="fas fa-download"></i> TRY AGAIN';
+                    btn.innerHTML = '<i class="fas fa-download"></i> TRY AGAIN!';
                     btn.disabled = false;
-                }, 1000);
+                }, 2000);
             }
         });
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             createParticles();
-            updateCursor();
             createDataNodes();
+            updateCursor();
 
             document.querySelectorAll('.cyber-social a').forEach(link => {
-                link.addEventListener('mouseover', () => {
-                    link.style.transform = 'translateY(-6px)';
+                link.addEventListener('mouseenter', () => {
+                    link.style.transform = 'translateY(-6px) scale(1.2)';
                 });
-
-                link.addEventListener('mouseout', () => {
+                link.addEventListener('mouseleave', () => {
                     link.style.transform = '';
                 });
-
                 link.addEventListener('touchstart', () => {
-                    link.style('transform', 'scale(0.95)');
-                });
-
+                    link.style.transform = 'scale(0.95)';
+                }, { passive: true });
                 link.addEventListener('touchend', () => {
-                    link.style('transform', '');
-                });
+                    link.style.transform = '';
+                }, { passive: true });
             });
         });
     </script>
