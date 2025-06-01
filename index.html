@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ravi Sai Vigneswara | Portfolio Visitor Card</title>
+    <title>Ravi Sai Vigneswara | Cyberpunk Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-blue: #00F5FF;
             --neon-pink: #FF00F5;
             --neon-purple: #7B2CBF;
+            --neon-green: #00FF9D;
             --dark-bg: #0A001A;
             --darker-bg: #050011;
             --grid-color: rgba(0, 245, 255, 0.15);
@@ -20,6 +20,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -31,56 +32,27 @@
             position: relative;
         }
         
-        /* Background Elements */
-        .circuit-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 70% 50%, rgba(0, 245, 255, 0.1) 0%, transparent 30%),
-                repeating-linear-gradient(45deg, rgba(0, 245, 255, 0.03) 0px, rgba(0, 245, 255, 0.03) 2px, transparent 2px, transparent 4px);
-            z-index: -3;
+        @font-face {
+            font-family: 'Rajdhani';
+            src: url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;700&display=swap');
         }
         
-        .hex-grid {
+        /* Cyberpunk Scanline Effect */
+        .scanlines {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                radial-gradient(circle at center, rgba(255, 0, 245, 0.05) 0%, transparent 20%),
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M30 1L70 1L99 50L70 99L30 99L1 50Z' fill='none' stroke='%2300F5FF' stroke-width='0.3' stroke-opacity='0.2'/%3E%3C/svg%3E");
-            background-size: 100px;
-            z-index: -4;
-        }
-        
-        .cyber-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 95%,
+                rgba(0, 245, 255, 0.03) 96%
+            );
+            background-size: 100% 5px;
             pointer-events: none;
-            z-index: -2;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            border-radius: 50%;
-            background: var(--neon-blue);
-            opacity: 0.5;
-            animation: float 15s linear infinite;
-        }
-        
-        @keyframes float {
-            to {
-                transform: translateY(-100vh) rotate(360deg);
-            }
+            z-index: 10;
+            animation: scanline 8s linear infinite;
         }
         
         /* Main Container */
@@ -93,57 +65,107 @@
             justify-content: center;
             padding: 2rem;
             position: relative;
+            overflow: hidden;
+        }
+        
+        /* Cyberpunk Grid Background */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* Animated Glow Effects */
+        .glow-effect {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .glow-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--neon-blue);
+            top: -100px;
+            left: -100px;
+            animation: float-1 15s ease infinite alternate;
+        }
+        
+        .glow-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--neon-pink);
+            bottom: -150px;
+            right: -100px;
+            animation: float-2 18s ease infinite alternate;
+        }
+        
+        /* Content Styling */
+        .content {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
             z-index: 1;
         }
         
-        /* Header */
         .header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease-out;
         }
         
         .header h1 {
-            font-size: 3rem;
+            font-size: clamp(2rem, 6vw, 4rem);
             font-weight: 700;
+            margin-bottom: 0.5rem;
             background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             text-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
-            margin-bottom: 0.5rem;
-        }
-        
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.8;
             letter-spacing: 1px;
         }
         
-        /* Cyber Card */
+        .header p {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+        
+        /* Cyberpunk QR Card */
         .cyber-card {
             background: rgba(10, 0, 26, 0.6);
             backdrop-filter: blur(10px);
-            border-radius: 10px;
+            border-radius: 5px;
             padding: 1.5rem;
-            box-shadow:
+            box-shadow: 
                 0 0 15px rgba(0, 245, 255, 0.3),
                 0 0 30px rgba(255, 0, 245, 0.2),
                 inset 0 0 20px rgba(0, 245, 255, 0.1);
             border: 1px solid rgba(0, 245, 255, 0.3);
-            width: 300px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-        }
-        
-        .cyber-card:hover {
-            transform: translateY(-5px);
-            box-shadow:
-                0 0 25px rgba(0, 245, 255, 0.4),
-                0 0 40px rgba(255, 0, 245, 0.3),
-                inset 0 0 25px rgba(0, 245, 255, 0.2);
+            cursor: pointer;
+            animation: float 6s ease-in-out infinite;
         }
         
         .cyber-card::before {
@@ -162,15 +184,25 @@
             transition: 0.5s;
         }
         
+        .cyber-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 0 25px rgba(0, 245, 255, 0.4),
+                0 0 40px rgba(255, 0, 245, 0.3),
+                inset 0 0 25px rgba(0, 245, 255, 0.2);
+        }
+        
         .cyber-card:hover::before {
             left: 100%;
         }
         
         .qr-code {
             width: 100%;
-            border-radius: 8px;
+            height: auto;
+            aspect-ratio: 1/1;
             background: white;
             padding: 10px;
+            border-radius: 5px;
             margin-bottom: 1rem;
             transition: transform 0.3s ease;
             border: 1px solid var(--neon-blue);
@@ -178,41 +210,63 @@
         
         .cyber-card:hover .qr-code {
             transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
+        }
+        
+        .qr-info {
+            text-align: center;
         }
         
         .qr-info h3 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
             color: var(--neon-blue);
             text-shadow: 0 0 5px rgba(0, 245, 255, 0.5);
-            margin-bottom: 0.5rem;
         }
         
         .qr-info p {
             font-size: 0.9rem;
             opacity: 0.8;
+            font-weight: 300;
         }
         
-        /* Cyber Button */
+        /* Cyberpunk Button */
         .cyber-button {
-            margin-top: 1.5rem;
-            padding: 0.8rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.8rem;
             background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
-            border: none;
             color: white;
-            font-weight: 600;
+            border: none;
+            border-radius: 0;
+            font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 0, 245, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
             transition: all 0.3s ease;
+            margin-top: 1rem;
             position: relative;
             overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 10px),
+                calc(100% - 10px) 100%,
+                0 100%
+            );
+            box-shadow: 0 0 15px rgba(255, 0, 245, 0.4);
         }
         
         .cyber-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 0 25px rgba(255, 0, 245, 0.6);
+        }
+        
+        .cyber-button:active {
+            transform: translateY(1px);
         }
         
         .cyber-button::before {
@@ -222,12 +276,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: 0.5s;
         }
         
@@ -235,25 +284,36 @@
             left: 100%;
         }
         
-        /* Social Links */
+        /* Success Confetti Effect */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--neon-green);
+            opacity: 0;
+            z-index: 100;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+        
+        /* Cyberpunk Social Links */
         .cyber-social {
-            margin-top: 2rem;
             display: flex;
-            gap: 1rem;
+            gap: 1.2rem;
             justify-content: center;
+            margin-top: 1.5rem;
         }
         
         .cyber-social a {
             color: white;
-            font-size: 1.5rem;
-            text-shadow: 0 0 10px currentColor;
+            font-size: 1.3rem;
             transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            text-shadow: 0 0 10px currentColor;
         }
         
         .cyber-social a::before {
@@ -277,117 +337,498 @@
             transform: rotate(0deg);
         }
         
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.2rem;
+        .cyber-social a:nth-child(1):hover { color: var(--neon-blue); }
+        .cyber-social a:nth-child(2):hover { color: #0A66C2; }
+        .cyber-social a:nth-child(3):hover { color: #E1306C; }
+        
+        /* Dialog Box */
+        .cyber-dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: rgba(10, 0, 26, 0.95);
+            border: 1px solid var(--neon-blue);
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            max-width: 90%;
+            width: 350px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .cyber-dialog.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .cyber-dialog h3 {
+            color: var(--neon-blue);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .cyber-dialog p {
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .cyber-dialog .dialog-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .cyber-dialog .dialog-button {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 0;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 8px),
+                calc(100% - 8px) 100%,
+                0 100%
+            );
+        }
+        
+        .cyber-dialog .dialog-button.confirm {
+            background: var(--neon-green);
+            color: #000;
+        }
+        
+        .cyber-dialog .dialog-button.cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes float-1 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+        
+        @keyframes float-2 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-50px, -50px); }
+        }
+        
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes confetti-fall {
+            0% { 
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
             }
-            
-            .header p {
-                font-size: 1rem;
+            100% { 
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Cyberpunk Particles */
+        .cyber-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(1px);
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
             }
             
             .cyber-card {
-                width: 90%;
-                max-width: 300px;
+                max-width: 280px;
+                padding: 1.2rem;
+            }
+            
+            .cyber-button {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
             }
             
             .cyber-social a {
-                font-size: 1.3rem;
-                width: 36px;
-                height: 36px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            .glow-1, .glow-2 {
+                filter: blur(40px);
+            }
+            
+            .cyber-dialog {
+                width: 90%;
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Background Elements -->
-    <div class="circuit-bg"></div>
-    <div class="hex-grid"></div>
+    <!-- Cyberpunk Background Elements -->
+    <div class="cyber-grid"></div>
+    <div class="glow-effect glow-1"></div>
+    <div class="glow-effect glow-2"></div>
+    <div class="scanlines"></div>
     <div class="cyber-particles" id="particles"></div>
-
-    <div class="container">
-        <header class="header">
-            <h1>RAVI SAI VIGNESWARA</h1>
-            <p>PORTFOLIO VISITOR CARD</p>
-        </header>
-
-        <div class="cyber-card" id="qrCard">
-            <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://ravisairockey.github.io/Game-Proto/" alt="Portfolio QR Code">
-            <div class="qr-info">
-                <h3>ACCESS PORTFOLIO</h3>
-                <p>Scan this neural link to enter my digital realm</p>
-            </div>
+    
+    <!-- Dialog Box -->
+    <div class="cyber-dialog" id="saveDialog">
+        <h3>SAVE ME TO YOUR DEVICE</h3>
+        <p>I'm just a lonely QR code in the digital void. Will you be my hero?</p>
+        <div class="dialog-buttons">
+            <button class="dialog-button confirm" id="confirmSave">YES, SAVE ME</button>
+            <button class="dialog-button cancel" id="cancelSave">MAYBE LATER</button>
         </div>
-
-        <button class="cyber-button" id="downloadBtn">
-            <i class="fas fa-download"></i> Download Wallpaper
-        </button>
-
-        <div class="cyber-social">
-            <a href="https://github.com/ravisairockey" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://linkedin.com/in/ravisai-vigneswara-113894191" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            <a href="https://instagram.com/rsv_amil" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    </div>
+    
+    <div class="cyber-dialog" id="successDialog">
+        <h3>DOWNLOAD COMPLETE!</h3>
+        <p>You've successfully saved me! <i class="fas fa-heart" style="color: var(--neon-pink);"></i></p>
+        <p>Thanks for the rescue, hero!</p>
+        <button class="dialog-button confirm" id="closeSuccess">ACKNOWLEDGED</button>
+    </div>
+    
+    <div class="container">
+        <div class="content">
+            <header class="header">
+                <h1>RAVI SAI VIGNESWARA</h1>
+                <p>PORTFOLIO VISITER CARD</p>
+            </header>
+            
+            <div class="cyber-card" id="qrCard">
+                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://ravisairockey.github.io/Game-Proto/" alt="Portfolio QR Code">
+                <div class="qr-info">
+                    <h3>ACCESS PORTFOLIO</h3>
+                    <p>Scan this neural link to enter my digital realm</p>
+                </div>
+            </div>
+            
+            <button class="cyber-button" id="downloadBtn">
+                <i class="fas fa-download"></i> SAVE ME!
+            </button>
+            
+            <div class="cyber-social">
+                <a href="https://github.com/ravisairockey" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://in.linkedin.com/in/ravisai-vigneswara-113894191/ms?trk=people-guest_people_search-card" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.instagram.com/rsv_amil/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
         </div>
     </div>
 
     <script>
-        // Generate Floating Particles
-        const container = document.getElementById("particles");
-        const particleCount = window.innerWidth < 768 ? 40 : 60;
-        
-        for (let i = 0; i < particleCount; i++) {
-            const dot = document.createElement("div");
-            dot.className = "particle";
+        // Cyberpunk Particles System
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 40 : 80;
             
-            // Random properties
-            dot.style.left = Math.random() * 100 + "vw";
-            dot.style.top = Math.random() * 100 + "vh";
-            dot.style.width = (Math.random() * 3 + 1) + "px";
-            dot.style.height = dot.style.width;
-            dot.style.animationDuration = (10 + Math.random() * 10) + "s";
-            dot.style.opacity = Math.random() * 0.5 + 0.2;
-            
-            // Random color (mostly blue, some pink)
-            dot.style.background = Math.random() > 0.8 ? "var(--neon-pink)" : "var(--neon-blue)";
-            
-            container.appendChild(dot);
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 3 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const opacity = Math.random() * 0.6 + 0.2;
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                const color = Math.random() > 0.7 ? 'var(--neon-pink)' : 'var(--neon-blue)';
+                
+                // Apply styles
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.opacity = opacity;
+                particle.style.background = color;
+                particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
+                
+                container.appendChild(particle);
+            }
         }
-
-        // Download Wallpaper
-        document.getElementById("downloadBtn").addEventListener("click", () => {
-            const btn = document.getElementById("downloadBtn");
-            const originalText = btn.innerHTML;
-            
-            // Show loading state
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
-            
-            setTimeout(() => {
-                // In a real implementation, you would generate or link to the actual wallpaper
-                window.open("https://raw.githubusercontent.com/ravisairockey/Game-Proto/main/assets/cyberpunk_wallpaper.png", "_blank");
-                
-                // Restore button text
-                btn.innerHTML = originalText;
-            }, 1000);
-        });
         
-        // Glitch effect on QR card
-        const qrCard = document.getElementById("qrCard");
+        // Cyberpunk Glitch Effect on QR Card
+        const qrCard = document.getElementById('qrCard');
+        let glitchTimeout;
         
+        function triggerGlitch() {
+            qrCard.style.transform = 'translateX(5px)';
+            qrCard.style.boxShadow = '0 0 30px rgba(255, 0, 245, 0.6)';
+            
+            clearTimeout(glitchTimeout);
+            glitchTimeout = setTimeout(() => {
+                qrCard.style.transform = '';
+                qrCard.style.boxShadow = '';
+            }, 100);
+        }
+        
+        // Random glitch effect
         setInterval(() => {
-            if (Math.random() > 0.9) {
-                qrCard.style.transform = "translateY(-5px) translateX(3px)";
-                qrCard.style.boxShadow = "0 0 30px rgba(255, 0, 245, 0.6)";
-                
-                setTimeout(() => {
-                    qrCard.style.transform = "translateY(-5px)";
-                    qrCard.style.boxShadow = 
-                        "0 0 25px rgba(0, 245, 255, 0.4), " +
-                        "0 0 40px rgba(255, 0, 245, 0.3), " +
-                        "inset 0 0 25px rgba(0, 245, 255, 0.2)";
-                }, 100);
+            if (Math.random() > 0.8) {
+                triggerGlitch();
             }
         }, 5000);
+        
+        // Interactive effects
+        qrCard.addEventListener('mousedown', () => {
+            qrCard.style.transform = 'scale(0.98)';
+        });
+        
+        qrCard.addEventListener('mouseup', () => {
+            qrCard.style.transform = 'scale(1)';
+        });
+        
+        qrCard.addEventListener('touchstart', () => {
+            qrCard.style.transform = 'scale(0.98)';
+        }, { passive: true });
+        
+        qrCard.addEventListener('touchend', () => {
+            qrCard.style.transform = 'scale(1)';
+        }, { passive: true });
+        
+        // Dialog controls
+        const saveDialog = document.getElementById('saveDialog');
+        const successDialog = document.getElementById('successDialog');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const confirmSaveBtn = document.getElementById('confirmSave');
+        const cancelSaveBtn = document.getElementById('cancelSave');
+        const closeSuccessBtn = document.getElementById('closeSuccess');
+        
+        downloadBtn.addEventListener('click', () => {
+            saveDialog.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        cancelSaveBtn.addEventListener('click', () => {
+            saveDialog.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        closeSuccessBtn.addEventListener('click', () => {
+            successDialog.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['var(--neon-blue)', 'var(--neon-pink)', 'var(--neon-green)', 'white'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                // Random properties
+                const size = Math.random() * 10 + 5;
+                const posX = Math.random() * 100;
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 2;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Apply styles
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.left = `${posX}%`;
+                confetti.style.background = color;
+                confetti.style.animationDuration = `${duration}s`;
+                confetti.style.animationDelay = `${delay}s`;
+                
+                document.body.appendChild(confetti);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, (duration + delay) * 1000);
+            }
+        }
+        
+        // Download Wallpaper
+        confirmSaveBtn.addEventListener('click', async () => {
+            try {
+                saveDialog.classList.remove('active');
+                
+                const btn = document.getElementById('downloadBtn');
+                const originalText = btn.innerHTML;
+                
+                // Show loading state with pulse animation
+                btn.innerHTML = '<i class="fas fa-cog fa-spin"></i> PREPARING RESCUE...';
+                btn.style.animation = 'pulse 1s infinite';
+                btn.disabled = true;
+                
+                // Create canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = 1920;
+                canvas.height = 1080;
+                const ctx = canvas.getContext('2d');
+                
+                // Draw cyberpunk background
+                const bgGradient = ctx.createLinearGradient(0, 0, 0, 1080);
+                bgGradient.addColorStop(0, '#1A0033');
+                bgGradient.addColorStop(0.5, '#0F0522');
+                bgGradient.addColorStop(1, '#000000');
+                ctx.fillStyle = bgGradient;
+                ctx.fillRect(0, 0, 1920, 1080);
+                
+                // Draw cyber grid
+                ctx.strokeStyle = 'rgba(0, 245, 255, 0.15)';
+                ctx.lineWidth = 1;
+                for (let x = 0; x < 1920; x += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, 1080);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < 1080; y += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(1920, y);
+                    ctx.stroke();
+                }
+                
+                // Add glow effects
+                const glow1 = ctx.createRadialGradient(300, 200, 0, 300, 200, 300);
+                glow1.addColorStop(0, 'rgba(0, 245, 255, 0.3)');
+                glow1.addColorStop(1, 'transparent');
+                ctx.fillStyle = glow1;
+                ctx.fillRect(0, 0, 1920, 1080);
+                
+                const glow2 = ctx.createRadialGradient(1600, 800, 0, 1600, 800, 400);
+                glow2.addColorStop(0, 'rgba(255, 0, 245, 0.3)');
+                glow2.addColorStop(1, 'transparent');
+                ctx.fillStyle = glow2;
+                ctx.fillRect(0, 0, 1920, 1080);
+                
+                // Add QR code
+                const qrImg = new Image();
+                qrImg.crossOrigin = 'Anonymous';
+                qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://ravisairockey.github.io/Game-Proto/';
+                
+                await new Promise((resolve) => {
+                    qrImg.onload = resolve;
+                });
+                
+                // Draw cyber card
+                ctx.save();
+                ctx.shadowColor = 'rgba(0, 245, 255, 0.5)';
+                ctx.shadowBlur = 40;
+                ctx.shadowOffsetY = 10;
+                ctx.fillStyle = 'rgba(10, 0, 26, 0.7)';
+                ctx.beginPath();
+                ctx.roundRect(1400 - 150, 540 - 170, 300, 340, [5]);
+                ctx.fill();
+                
+                // Add inner glow
+                ctx.strokeStyle = 'rgba(0, 245, 255, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(1400 - 150, 540 - 170, 300, 340);
+                
+                // Add QR code
+                ctx.drawImage(qrImg, 1400 - 125, 540 - 145, 250, 250);
+                
+                // Add text
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 36px "Rajdhani", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('RAVI SAI ROCKEY', 1400, 540 + 120);
+                ctx.font = '24px "Rajdhani", sans-serif';
+                ctx.fillStyle = 'rgba(0, 245, 255, 0.9)';
+                ctx.fillText('SCAN FOR PORTFOLIO', 1400, 540 + 150);
+                
+                // Convert to image and download
+                canvas.toBlob((blob) => {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'ravisairockey-cyberpunk-wallpaper.png';
+                    link.click();
+                    
+                    // Show success dialog
+                    successDialog.classList.add('active');
+                    createConfetti();
+                    
+                    // Restore button
+                    btn.innerHTML = '<i class="fas fa-download"></i> SAVE ME AGAIN?';
+                    btn.style.animation = '';
+                    btn.disabled = false;
+                }, 'image/png');
+                
+            } catch (error) {
+                console.error('Error generating wallpaper:', error);
+                const btn = document.getElementById('downloadBtn');
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> RESCUE FAILED';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-download"></i> TRY AGAIN';
+                    btn.style.animation = '';
+                    btn.disabled = false;
+                }, 2000);
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            
+            // Add cyberpunk hover effects to social links
+            document.querySelectorAll('.cyber-social a').forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                    link.style.transform = 'translateY(-5px)';
+                });
+                
+                link.addEventListener('mouseleave', () => {
+                    link.style.transform = '';
+                });
+                
+                link.addEventListener('touchstart', () => {
+                    link.style.transform = 'scale(0.9)';
+                }, { passive: true });
+                
+                link.addEventListener('touchend', () => {
+                    link.style.transform = '';
+                }, { passive: true });
+            });
+        });
     </script>
 </body>
 </html>
