@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ravi Sai Rockey | Interactive Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00F5FF;
+            --secondary: #FF00F5;
+            --dark: #1A0033;
+            --light: #F0F0FF;
+            --accent: #7B2CBF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Main Container */
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, var(--dark) 0%, #0F0522 50%, #000000 100%);
+            overflow: hidden;
+        }
+        
+        .hex-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at center, rgba(255, 0, 245, 0.05) 0%, transparent 20%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M30 1L70 1L99 50L70 99L30 99L1 50Z' fill='none' stroke='%2300F5FF' stroke-width='0.3' stroke-opacity='0.2'/%3E%3C/svg%3E");
+            background-size: 100px 100px;
+            opacity: 0.6;
+        }
+        
+        /* Content Styling */
+        .content {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .header h1 {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .header p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* QR Card with Micro-interactions */
+        .qr-card {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.2);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            width: 100%;
+            max-width: 300px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .qr-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 245, 255, 0.3);
+        }
+        
+        .qr-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 0%,
+                rgba(0, 245, 255, 0.1) 50%,
+                transparent 100%
+            );
+            transform: rotate(30deg);
+            transition: all 0.6s ease;
+        }
+        
+        .qr-card:hover::before {
+            animation: shine 1.5s ease;
+        }
+        
+        .qr-code {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1/1;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .qr-card:hover .qr-code {
+            transform: scale(1.02);
+        }
+        
+        .qr-info {
+            text-align: center;
+        }
+        
+        .qr-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .qr-info p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Download Button */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 245, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 245, 255, 0.4);
+        }
+        
+        .download-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .download-btn:hover::before {
+            left: 100%;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            color: var(--light);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            20%, 100% { left: 100%; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .qr-card {
+                max-width: 280px;
+                padding: 1.2rem;
+            }
+            
+            .download-btn {
+                padding: 0.7rem 1.3rem;
+                font-size: 0.9rem;
+            }
+            
+            .social-links a {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Dark mode preference */
+        @media (prefers-color-scheme: dark) {
+            .qr-code {
+                background: white;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="hex-grid"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+    
+    <div class="container">
+        <div class="content">
+            <header class="header">
+                <h1>Ravi Sai Rockey</h1>
+                <p>Interactive Portfolio Wallpaper Generator</p>
+            </header>
+            
+            <div class="qr-card" id="qrCard">
+                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://ravisairockey.github.io/Game-Proto/" alt="Portfolio QR Code">
+                <div class="qr-info">
+                    <h3>My Portfolio</h3>
+                    <p>Scan this QR code to visit my interactive portfolio</p>
+                </div>
+            </div>
+            
+            <button class="download-btn" id="downloadBtn">
+                <i class="fas fa-download"></i> Save Wallpaper
+            </button>
+            
+            <footer class="footer">
+                <p>Connect with me</p>
+                <div class="social-links">
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Particles System
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 30 : 60;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 3 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const opacity = Math.random() * 0.6 + 0.2;
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                const color = Math.random() > 0.7 ? 'var(--secondary)' : 'var(--primary)';
+                
+                // Apply styles
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.opacity = opacity;
+                particle.style.background = color;
+                particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Micro-interactions for QR Card
+        const qrCard = document.getElementById('qrCard');
+        
+        qrCard.addEventListener('mousedown', () => {
+            qrCard.style.transform = 'scale(0.98)';
+        });
+        
+        qrCard.addEventListener('mouseup', () => {
+            qrCard.style.transform = 'scale(1)';
+        });
+        
+        qrCard.addEventListener('touchstart', () => {
+            qrCard.style.transform = 'scale(0.98)';
+        }, { passive: true });
+        
+        qrCard.addEventListener('touchend', () => {
+            qrCard.style.transform = 'scale(1)';
+        }, { passive: true });
+        
+        // Download functionality
+        document.getElementById('downloadBtn').addEventListener('click', async () => {
+            try {
+                const btn = document.getElementById('downloadBtn');
+                const originalText = btn.innerHTML;
+                
+                // Show loading state
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+                btn.disabled = true;
+                
+                // Create a canvas version of the wallpaper
+                const canvas = document.createElement('canvas');
+                canvas.width = 1920;
+                canvas.height = 1080;
+                const ctx = canvas.getContext('2d');
+                
+                // Draw background
+                const bgGradient = ctx.createLinearGradient(0, 0, 0, 1080);
+                bgGradient.addColorStop(0, '#1A0033');
+                bgGradient.addColorStop(0.5, '#0F0522');
+                bgGradient.addColorStop(1, '#000000');
+                ctx.fillStyle = bgGradient;
+                ctx.fillRect(0, 0, 1920, 1080);
+                
+                // Draw hex grid
+                const hexPattern = new Path2D('M30 1L70 1L99 50L70 99L30 99L1 50Z');
+                ctx.save();
+                const patternCanvas = document.createElement('canvas');
+                patternCanvas.width = 100;
+                patternCanvas.height = 100;
+                const patternCtx = patternCanvas.getContext('2d');
+                patternCtx.strokeStyle = 'rgba(0, 245, 255, 0.2)';
+                patternCtx.lineWidth = 0.3;
+                patternCtx.translate(50, 50);
+                patternCtx.stroke(hexPattern);
+                
+                const pattern = ctx.createPattern(patternCanvas, 'repeat');
+                ctx.fillStyle = pattern;
+                ctx.globalAlpha = 0.6;
+                ctx.fillRect(0, 0, 1920, 1080);
+                ctx.restore();
+                
+                // Add radial glow
+                const radialGradient = ctx.createRadialGradient(1400, 540, 0, 1400, 540, 600);
+                radialGradient.addColorStop(0, 'rgba(0, 245, 255, 0.1)');
+                radialGradient.addColorStop(1, 'transparent');
+                ctx.fillStyle = radialGradient;
+                ctx.globalAlpha = 1;
+                ctx.fillRect(0, 0, 1920, 1080);
+                
+                // Add QR code
+                const qrImg = new Image();
+                qrImg.crossOrigin = 'Anonymous';
+                qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://ra
