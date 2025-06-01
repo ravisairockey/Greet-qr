@@ -461,4 +461,73 @@
                 // Add QR code
                 const qrImg = new Image();
                 qrImg.crossOrigin = 'Anonymous';
-                qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://ra
+                qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://ravisairockey.github.io/Game-Proto/';
+                
+                await new Promise((resolve) => {
+                    qrImg.onload = resolve;
+                });
+                
+                // Draw QR card
+                ctx.save();
+                ctx.shadowColor = 'rgba(0, 245, 255, 0.3)';
+                ctx.shadowBlur = 30;
+                ctx.shadowOffsetY = 10;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.beginPath();
+                ctx.roundRect(1400 - 150, 540 - 170, 300, 340, [20]);
+                ctx.fill();
+                ctx.restore();
+                
+                // Draw QR code
+                ctx.drawImage(qrImg, 1400 - 125, 540 - 145, 250, 250);
+                
+                // Add text
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 36px "Segoe UI", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Ravi Sai Rockey', 1400, 540 + 120);
+                ctx.font = '24px "Segoe UI", sans-serif';
+                ctx.fillStyle = 'rgba(0, 245, 255, 0.9)';
+                ctx.fillText('Scan for Portfolio', 1400, 540 + 150);
+                
+                // Convert to image and download
+                canvas.toBlob((blob) => {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'ravisairockey-portfolio-wallpaper.png';
+                    link.click();
+                    
+                    // Restore button state
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 'image/png');
+                
+            } catch (error) {
+                console.error('Error generating wallpaper:', error);
+                const btn = document.getElementById('downloadBtn');
+                btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-download"></i> Save Wallpaper';
+                    btn.disabled = false;
+                }, 2000);
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            
+            // Add touch feedback for social links
+            document.querySelectorAll('.social-links a').forEach(link => {
+                link.addEventListener('touchstart', () => {
+                    link.style.transform = 'scale(0.9)';
+                }, { passive: true });
+                
+                link.addEventListener('touchend', () => {
+                    link.style.transform = 'scale(1)';
+                }, { passive: true });
+            });
+        });
+    </script>
+</body>
+</html>
