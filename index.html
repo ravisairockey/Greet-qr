@@ -10,8 +10,9 @@
             --neon-cyan: #00D4FF;
             --neon-purple: #B100FF;
             --neon-green: #00FF66;
+            --neon-red: #FF2D55;
             --deep-navy: #0A0F2D;
-            --hex-grid: rgba(0, 212, 255, 0.12);
+            --hex-grid: rgba(0, 212, 255, 0.15);
         }
 
         * {
@@ -22,7 +23,7 @@
         }
 
         body {
-            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+            font-family: 'Orbitron', 'Rajdhani', 'Segoe UI', sans-serif;
             background: var(--deep-navy);
             color: white;
             overflow-x: hidden;
@@ -31,50 +32,100 @@
         }
 
         @font-face {
-            font-family: 'Rajdhani';
-            src: url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+            font-family: 'Orbitron';
+            src: url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap');
         }
 
-        /* Hexagonal Grid Background */
+        /* Animated Hexagonal Grid Background */
         .hex-grid {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L59.5 15v26L30 51 0.5 36V10L30 0z' fill='none' stroke='%2300D4FF' stroke-opacity='0.12' stroke-width='1'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L59.5 15v26L30 51 0.5 36V10L30 0z' fill='none' stroke='%2300D4FF' stroke-opacity='0.15' stroke-width='1.5'/%3E%3C/svg%3E");
             background-size: 60px 52px;
             background-position: center;
-            opacity: 0.3;
             z-index: -1;
-            animation: hex-pulse 20s ease-in-out infinite;
+            animation: hex-pulse 15s ease-in-out infinite;
         }
 
-        /* Glow Effects */
+        .hex-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L59.5 15v26L30 51 0.5 36V10L30 0z' fill='none' stroke='%2300FF66' stroke-opacity='0.3' stroke-width='1'/%3E%3C/svg%3E");
+            background-size: 60px 52px;
+            opacity: 0.3;
+            animation: hex-flicker 4s ease-in-out infinite;
+        }
+
+        /* Circuit Traces */
+        .circuit-traces {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                var(--neon-cyan) 20px,
+                var(--neon-cyan) 22px
+            );
+            opacity: 0.1;
+            animation: circuit-flow 10s linear infinite;
+        }
+
+        /* Data Nodes */
+        .data-nodes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .data-node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--neon-green);
+            animation: node-drift 20s ease-in-out infinite;
+        }
+
+        /* Glow Effects with RGB Cycling */
         .glow-effect {
             position: fixed;
             border-radius: 50%;
             filter: blur(60px);
-            opacity: 0.2;
+            opacity: 0.25;
             z-index: -1;
+            animation: rgb-cycle 8s ease-in-out infinite;
         }
 
         .glow-1 {
             width: 400px;
             height: 400px;
-            background: var(--neon-cyan);
             top: -150px;
             left: -150px;
-            animation: float-1 14s ease infinite alternate;
+            animation: float-1 14s ease infinite alternate, rgb-cycle 8s ease-in-out infinite;
         }
 
         .glow-2 {
             width: 500px;
             height: 500px;
-            background: var(--neon-purple);
             bottom: -150px;
             right: -150px;
-            animation: float-2 16s ease infinite alternate;
+            animation: float-2 16s ease infinite alternate, rgb-cycle 8s ease-in-out infinite 2s;
         }
 
         /* Container */
@@ -136,12 +187,13 @@
         .cyber-card {
             background: rgba(10, 15, 45, 0.8);
             backdrop-filter: blur(10px);
-            border-radius: 12px;
+            border-radius: 0;
+            clip-path: polygon(10% 0%, 90% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 90%, 0% 10%);
             padding: 2.5rem;
             box-shadow: 
                 0 0 25px rgba(0, 212, 255, 0.3),
                 0 0 40px rgba(177, 0, 255, 0.2);
-            border: 1px solid rgba(0, 212, 255, 0.4);
+            border: 2px solid var(--neon-red);
             width: 100%;
             max-width: 360px;
             transition: all 0.4s ease;
@@ -182,7 +234,7 @@
             aspect-ratio: 1/1;
             background: white;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 8px;
             margin-bottom: 1.8rem;
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             border: 2px solid var(--neon-cyan);
@@ -220,8 +272,9 @@
             padding: 1.2rem 2.5rem;
             background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan));
             color: white;
-            border: none;
-            border-radius: 8px;
+            border: 2px solid var(--neon-red);
+            border-radius: 0;
+            clip-path: polygon(10% 0%, 90% 0%, 100% 20%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 20%);
             font-size: 1.3rem;
             font-weight: 600;
             cursor: pointer;
@@ -291,7 +344,8 @@
             background: rgba(10, 15, 45, 0.9);
             backdrop-filter: blur(12px);
             padding: 3rem;
-            border-radius: 12px;
+            border-radius: 0;
+            clip-path: polygon(10% 0%, 90% 0%, 100% 20%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 20%);
             border: 2px solid var(--neon-green);
             text-align: center;
             color: var(--neon-green);
@@ -301,7 +355,8 @@
             opacity: 0;
             transition: opacity 0.6s ease, transform 0.6s ease;
             z-index: 21;
-            animation: vibrate 0.3s ease 3;
+            animation: level-up 0.8s ease;
+            text-shadow: 0 0 10px var(--neon-green);
         }
 
         .success-message.active {
@@ -339,7 +394,7 @@
             transform: scale(0.8);
             opacity: 0;
             transition: all 0.4s ease;
-            border-radius: 8px;
+            clip-path: polygon(10% 0%, 90% 0%, 100% 20%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 20%);
         }
 
         .cyber-social a:hover {
@@ -378,6 +433,28 @@
             50% { opacity: 0.15; }
         }
 
+        @keyframes hex-flicker {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.1; }
+        }
+
+        @keyframes circuit-flow {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+
+        @keyframes node-drift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, -50px); }
+        }
+
+        @keyframes rgb-cycle {
+            0% { background: var(--neon-cyan); }
+            33% { background: var(--neon-purple); }
+            66% { background: var(--neon-red); }
+            100% { background: var(--neon-cyan); }
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
@@ -393,10 +470,10 @@
             100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
         }
 
-        @keyframes vibrate {
-            0%, 100% { transform: translate(-50%, -50%) translateX(0); }
-            25% { transform: translate(-50%, -50%) translateX(3px); }
-            75% { transform: translate(-50%, -50%) translateX(-3px); }
+        @keyframes level-up {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            50% { transform: translate(-50%, -70%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -70%) scale(1); opacity: 1; }
         }
 
         @keyframes glitch-flash {
@@ -492,29 +569,36 @@
             .header p {
                 font-size: clamp(1rem, 3vw, 1.2rem);
             }
+
+            .data-node {
+                width: 6px;
+                height: 6px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Cyberpunk Background Elements -->
     <div class="hex-grid"></div>
+    <div class="circuit-traces"></div>
+    <div class="data-nodes" id="dataNodes"></div>
     <div class="glow-effect glow-1"></div>
     <div class="glow-effect glow-2"></div>
     <div class="cyber-particles" id="particles"></div>
     <div class="success-overlay" id="successOverlay"></div>
-    <div class="success-message" id="successMessage">You've successfully saved me! <i class="fas fa-heart"></i></div>
+    <div class="success-message" id="successMessage">MISSION COMPLETE! You've successfully saved me! <i class="fas fa-heart"></i></div>
 
     <div class="container">
         <div class="content">
             <header class="header">
                 <h1>RAVI SAI VIGNESWARA</h1>
-                <p>GAMER PORTFOLIO CARD</p>
+                <p>ULTIMATE GAMER PORTFOLIO</p>
             </header>
 
             <div class="cyber-card" id="qrCard">
                 <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://ravisairockey.github.io/Game-Proto/" alt="Portfolio QR Code">
                 <div class="qr-info">
-                    <h3>ENTER THE GRID</h3>
+                    <h3>UNLOCK MY GRID!</h3>
                     <p>Hey, scan me to join my gaming grid!</p>
                 </div>
             </div>
@@ -564,6 +648,29 @@
                 particle.style.animation = `particle-move ${duration}s linear ${delay}s infinite`;
 
                 container.appendChild(particle);
+            }
+        }
+
+        // Data Nodes System
+        function createDataNodes() {
+            const container = document.getElementById('dataNodes');
+            const nodeCount = window.innerWidth < 768 ? 10 : 20;
+
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.classList.add('data-node');
+
+                // Random properties
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+
+                // Apply styles
+                node.style.left = `${posX}%`;
+                node.style.top = `${posY}%`;
+                node.style.animationDelay = `${delay}s`;
+
+                container.appendChild(node);
             }
         }
 
@@ -633,13 +740,23 @@
                 ctx.fillStyle = '#0A0F2D';
                 ctx.fillRect(0, 0, 1920, 1080);
                 const hexPattern = new Image();
-                hexPattern.src = "data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L59.5 15v26L30 51 0.5 36V10L30 0z' fill='none' stroke='%2300D4FF' stroke-opacity='0.12' stroke-width='1'/%3E%3C/svg%3E";
+                hexPattern.src = "data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L59.5 15v26L30 51 0.5 36V10L30 0z' fill='none' stroke='%2300D4FF' stroke-opacity='0.15' stroke-width='1.5'/%3E%3C/svg%3E";
                 await new Promise((resolve) => {
                     hexPattern.onload = resolve;
                 });
                 const pattern = ctx.createPattern(hexPattern, 'repeat');
                 ctx.fillStyle = pattern;
                 ctx.fillRect(0, 0, 1920, 1080);
+
+                // Add circuit traces
+                ctx.strokeStyle = 'rgba(0, 212, 255, 0.1)';
+                ctx.lineWidth = 2;
+                for (let x = 0; x < 1920; x += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x + 20, 1080);
+                    ctx.stroke();
+                }
 
                 // Add glow effects
                 const glow1 = ctx.createRadialGradient(300, 200, 0, 300, 200, 400);
@@ -670,25 +787,33 @@
                 ctx.shadowOffsetY = 15;
                 ctx.fillStyle = 'rgba(10, 15, 45, 0.8)';
                 ctx.beginPath();
-                ctx.roundRect(1400 - 150, 540 - 170, 300, 340, [10]);
+                ctx.moveTo(1400 - 135, 540 - 170);
+                ctx.lineTo(1400 + 135, 540 - 170);
+                ctx.lineTo(1400 + 150, 540 - 136);
+                ctx.lineTo(1400 + 150, 540 + 136);
+                ctx.lineTo(1400 + 135, 540 + 170);
+                ctx.lineTo(1400 - 135, 540 + 170);
+                ctx.lineTo(1400 - 150, 540 + 136);
+                ctx.lineTo(1400 - 150, 540 - 136);
+                ctx.closePath();
                 ctx.fill();
 
                 // Add inner glow
-                ctx.strokeStyle = 'rgba(0, 212, 255, 0.4)';
+                ctx.strokeStyle = 'rgba(255, 45, 85, 0.4)';
                 ctx.lineWidth = 2;
-                ctx.strokeRect(1400 - 150, 540 - 170, 300, 340);
+                ctx.stroke();
 
                 // Add QR code
                 ctx.drawImage(qrImg, 1400 - 125, 540 - 145, 250, 250);
 
                 // Add text
                 ctx.fillStyle = 'white';
-                ctx.font = 'bold 40px "Rajdhani", sans-serif';
+                ctx.font = 'bold 40px "Orbitron", sans-serif';
                 ctx.textAlign = 'center';
                 ctx.fillText('RAVI SAI VIGNESWARA', 1400, 540 + 130);
-                ctx.font = '28px "Rajdhani", sans-serif';
+                ctx.font = '28px "Orbitron", sans-serif';
                 ctx.fillStyle = 'rgba(0, 212, 255, 0.95)';
-                ctx.fillText('ENTER THE GRID', 1400, 540 + 160);
+                ctx.fillText('UNLOCK MY GRID!', 1400, 540 + 160);
 
                 // Convert to image and download
                 canvas.toBlob((blob) => {
@@ -700,7 +825,7 @@
                     // Show success animation
                     btn.classList.remove('pulse');
                     btn.classList.add('success');
-                    btn.innerHTML = '<i class="fas fa-check-circle"></i> UPLOAD COMPLETE!';
+                    btn.innerHTML = '<i class="fas fa-check-circle"></i> MISSION COMPLETE!';
                     successOverlay.classList.add('active');
                     successMessage.classList.add('active');
 
@@ -716,7 +841,7 @@
                         const angle = Math.random() * 2 * Math.PI;
                         const speed = Math.random() * 200 + 150;
                         const duration = Math.random() * 1 + 0.8;
-                        const colors = ['var(--neon-green)', 'var(--neon-cyan)', 'var(--neon-purple)', '#FF007A'];
+                        const colors = ['var(--neon-green)', 'var(--neon-cyan)', 'var(--neon-purple)', 'var(--neon-red)'];
                         const color = colors[Math.floor(Math.random() * colors.length)];
                         particle.style.width = `${size}px`;
                         particle.style.height = `${size}px`;
@@ -756,6 +881,7 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             createParticles();
+            createDataNodes();
 
             // Add cyberpunk hover effects to social links
             document.querySelectorAll('.cyber-social a').forEach(link => {
