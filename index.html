@@ -29,11 +29,61 @@
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
+            cursor: none;
         }
 
         @font-face {
             font-family: 'Orbitron';
             src: url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap');
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            pointer-events: none;
+            z-index: 1000;
+            transform: translate(-50%, -50%);
+            animation: cursor-pulse 1.5s ease-in-out infinite;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .custom-cursor.hovered {
+            border-color: var(--neon-green);
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Hide default cursor on desktop */
+        @media (hover: hover) {
+            * {
+                cursor: none;
+            }
+        }
+
+        /* Show default cursor on touch devices */
+        @media (hover: none) {
+            .custom-cursor, .cursor-trail {
+                display: none;
+            }
+            body {
+                cursor: auto;
+            }
         }
 
         /* Animated Hexagonal Grid Background */
@@ -199,7 +249,7 @@
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
-            cursor: pointer;
+            cursor: none;
             animation: float 5s ease-in-out infinite;
             will-change: transform, box-shadow;
         }
@@ -277,7 +327,7 @@
             clip-path: polygon(10% 0%, 90% 0%, 100% 20%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 20%);
             font-size: 1.2rem;
             font-weight: 600;
-            cursor: pointer;
+            cursor: none;
             transition: all 0.4s ease;
             margin-top: 1.5rem;
             position: relative;
@@ -383,6 +433,7 @@
             justify-content: center;
             position: relative;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            cursor: none;
         }
 
         .cyber-social a::before {
@@ -413,6 +464,16 @@
         .cyber-social a:nth-child(3):hover { color: #E1306C; }
 
         /* Animations */
+        @keyframes cursor-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        @keyframes trail-fade {
+            0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+        }
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
@@ -578,6 +639,14 @@
     </style>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="customCursor"></div>
+    <div class="cursor-trail" id="trail0"></div>
+    <div class="cursor-trail" id="trail1"></div>
+    <div class="cursor-trail" id="trail2"></div>
+    <div class="cursor-trail" id="trail3"></div>
+    <div class="cursor-trail" id="trail4"></div>
+
     <!-- Cyberpunk Background Elements -->
     <div class="hex-grid"></div>
     <div class="circuit-traces"></div>
@@ -616,6 +685,72 @@
     </div>
 
     <script>
+        // Custom Cursor and Trail
+        const cursor = document.getElementById('customCursor');
+        const trails = [
+            document.getElementById('trail0'),
+            document.getElementById('trail1'),
+            document.getElementById('trail2'),
+            document.getElementById('trail3'),
+            document.getElementById('trail4')
+        ];
+        const trailPositions = [];
+        const colors = ['var(--neon-cyan)', 'var(--neon-purple)', 'var(--neon-green)', 'var(--neon-red)'];
+
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        const lerpFactor = 0.1;
+
+        function updateCursor() {
+            // Smooth cursor movement
+            cursorX += (mouseX - cursorX) * lerpFactor;
+            cursorY += (mouseY - cursorY) * lerpFactor;
+            cursor.style.left = `${cursorX}px`;
+            cursor.style.top = `${cursorY}px`;
+
+            // Update trail
+            trailPositions.unshift({ x: cursorX, y: cursorY });
+            if (trailPositions.length > trails.length) {
+                trailPositions.pop();
+            }
+
+            trails.forEach((trail, index) => {
+                if (trailPositions[index]) {
+                    trail.style.left = `${trailPositions[index].x}px`;
+                    trail.style.top = `${trailPositions[index].y}px`;
+                    trail.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    trail.style.opacity = 0.8 - (index / trails.length) * 0.6;
+                    trail.style.animation = `trail-fade 0.4s ease forwards`;
+                }
+            });
+
+            requestAnimationFrame(updateCursor);
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Hover interactions
+        const interactiveElements = document.querySelectorAll('.cyber-button, .cyber-card, .cyber-social a');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hovered');
+                trails.forEach(trail => {
+                    trail.style.width = '8px';
+                    trail.style.height = '8px';
+                });
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hovered');
+                trails.forEach(trail => {
+                    trail.style.width = '6px';
+                    trail.style.height = '6px';
+                });
+            });
+        });
+
         // Cyberpunk Particles System
         function createParticles() {
             const container = document.getElementById('particles');
@@ -625,7 +760,6 @@
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
 
-                // Random properties
                 const size = Math.random() * 3 + 2;
                 const posX = Math.random() * 100;
                 const posY = Math.random() * 100;
@@ -636,7 +770,6 @@
                 const xMove = (Math.random() - 0.5) * 250;
                 const yMove = (Math.random() - 0.5) * 250;
 
-                // Apply styles
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 particle.style.left = `${posX}%`;
@@ -660,12 +793,10 @@
                 const node = document.createElement('div');
                 node.classList.add('data-node');
 
-                // Random properties
                 const posX = Math.random() * 100;
                 const posY = Math.random() * 100;
                 const delay = Math.random() * 5;
 
-                // Apply styles
                 node.style.left = `${posX}%`;
                 node.style.top = `${posY}%`;
                 node.style.animationDelay = `${delay}s`;
@@ -685,7 +816,6 @@
             }, 200);
         }
 
-        // Random glitch effect
         setInterval(() => {
             if (Math.random() > 0.85) {
                 triggerGlitch();
@@ -722,21 +852,17 @@
                 const successMessage = document.getElementById('successMessage');
                 const originalText = btn.innerHTML;
 
-                // Trigger ripple effect and pulse
                 btn.classList.add('click', 'pulse');
                 setTimeout(() => btn.classList.remove('click'), 500);
 
-                // Show loading state
                 btn.innerHTML = '<i class="fas fa-cog fa-spin"></i> PREPARING RESCUE...';
                 btn.disabled = true;
 
-                // Create canvas
                 const canvas = document.createElement('canvas');
                 canvas.width = 1920;
                 canvas.height = 1080;
                 const ctx = canvas.getContext('2d');
 
-                // Draw hex grid background
                 ctx.fillStyle = '#0A0F2D';
                 ctx.fillRect(0, 0, 1920, 1080);
                 const hexPattern = new Image();
@@ -748,7 +874,6 @@
                 ctx.fillStyle = pattern;
                 ctx.fillRect(0, 0, 1920, 1080);
 
-                // Add circuit traces
                 ctx.strokeStyle = 'rgba(0, 212, 255, 0.1)';
                 ctx.lineWidth = 2;
                 for (let x = 0; x < 1920; x += 40) {
@@ -758,7 +883,6 @@
                     ctx.stroke();
                 }
 
-                // Add glow effects
                 const glow1 = ctx.createRadialGradient(300, 200, 0, 300, 200, 400);
                 glow1.addColorStop(0, 'rgba(0, 212, 255, 0.3)');
                 glow1.addColorStop(1, 'transparent');
@@ -771,7 +895,6 @@
                 ctx.fillStyle = glow2;
                 ctx.fillRect(0, 0, 1920, 1080);
 
-                // Add QR code
                 const qrImg = new Image();
                 qrImg.crossOrigin = 'Anonymous';
                 qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://ravisairockey.github.io/Game-Proto/';
@@ -780,7 +903,6 @@
                     qrImg.onload = resolve;
                 });
 
-                // Draw cyber card
                 ctx.save();
                 ctx.shadowColor = 'rgba(0, 212, 255, 0.5)';
                 ctx.shadowBlur = 50;
@@ -798,15 +920,12 @@
                 ctx.closePath();
                 ctx.fill();
 
-                // Add inner glow
                 ctx.strokeStyle = 'rgba(255, 45, 85, 0.4)';
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                // Add QR code
                 ctx.drawImage(qrImg, 1400 - 125, 540 - 145, 250, 250);
 
-                // Add text
                 ctx.fillStyle = 'white';
                 ctx.font = 'bold 40px "Orbitron", sans-serif';
                 ctx.textAlign = 'center';
@@ -815,21 +934,18 @@
                 ctx.fillStyle = 'rgba(0, 212, 255, 0.95)';
                 ctx.fillText('UNLOCK MY GRID!', 1400, 540 + 160);
 
-                // Convert to image and download
                 canvas.toBlob((blob) => {
                     const link = document.createElement('a');
                     link.href = URL.createObjectURL(blob);
                     link.download = 'ravisai-gamer-wallpaper.png';
                     link.click();
 
-                    // Show success animation
                     btn.classList.remove('pulse');
                     btn.classList.add('success');
                     btn.innerHTML = '<i class="fas fa-check-circle"></i> MISSION COMPLETE!';
                     successOverlay.classList.add('active');
                     successMessage.classList.add('active');
 
-                    // Create confetti particles
                     const confettiContainer = document.createElement('div');
                     confettiContainer.classList.add('cyber-particles');
                     document.body.appendChild(confettiContainer);
@@ -855,7 +971,6 @@
                         confettiContainer.appendChild(particle);
                     }
 
-                    // Reset button and remove success animation
                     setTimeout(() => {
                         btn.classList.remove('success');
                         btn.innerHTML = '<i class="fas fa-download"></i> TRY AGAIN!';
@@ -882,8 +997,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             createParticles();
             createDataNodes();
+            updateCursor();
 
-            // Add cyberpunk hover effects to social links
             document.querySelectorAll('.cyber-social a').forEach(link => {
                 link.addEventListener('mouseenter', () => {
                     link.style.transform = 'translateY(-6px) scale(1.2)';
